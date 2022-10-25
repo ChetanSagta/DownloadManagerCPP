@@ -1,0 +1,9 @@
+build/*
+.settings/*
+.cache/*
+.qtc_clangd/*
+.vscode/*
+.cproject
+.project
+compile_commands.json
+CMakeLists.txt.user
