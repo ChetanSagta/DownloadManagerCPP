@@ -1,27 +1,31 @@
-#include <curlpp/Easy.hpp>
-#include <curlpp/Infos.hpp>
-#include <curlpp/Options.hpp>
-#include <curlpp/cURLpp.hpp>
-#include<string>
+#include <curl/curl.h>
+
+#include <string>
 
 namespace DownloadManager {
 
 class NetClient {
    public:
-    NetClient(std::string url);
+    NetClient();
     ~NetClient();
+
+    void setUrl(std::string url);
+    void pauseDownload();
+    void run();
 
    private:
     std::string url;
     std::string fileName;
     std::string contentType;
     int port;
-    curlpp::Easy easyHandle;
+    CURL* easy_handle;
     std::string getFileName();
-    static size_t writeToFile(char* ptr, size_t size, size_t nmemb, void*f);
+    static size_t writeToFile(char* ptr, size_t size, size_t nmemb, void* f);
     static size_t header_callback(char* buffer, unsigned long size,
-    unsigned long nitems, void* userdata);
+                                  unsigned long nitems, void* userdata);
     std::string getFileName(std::string, std::string);
+    double static ProgressCallBack(double, double, double, double);
+    static size_t headerCallBack(char*, size_t, size_t,void*);
 };
 
 }  // namespace DownloadManager

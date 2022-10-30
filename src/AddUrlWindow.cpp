@@ -1,10 +1,14 @@
 #include "AddUrlWindow.hpp"
 
+#include <gtkmm/entry.h>
+#include <gtkmm/enums.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include <iostream>
 
-#include "gtkmm/enums.h"
+#include "DownloadEntry.hpp"
+#include "NetClient.hpp"
+#include "StringUtil.cpp"
 
 namespace DownloadManager {
 
@@ -35,10 +39,20 @@ AddUrlWindow::AddUrlWindow()
 
 AddUrlWindow::~AddUrlWindow() {}
 
-void AddUrlWindow::on_ok() { std::cout << m_url.get_buffer()->get_text()<< std::endl; }
+void AddUrlWindow::on_ok() {
+    std::string url = m_url.get_buffer()->get_text();
+    url = StringUtil::trim(url);
 
-void AddUrlWindow::on_cancel() { std::cout << "CANCEL BTN" << std::endl; 
-  this->hide();
+    NetClient net_client;
+    net_client.setUrl(url);
+    net_client.run();
+    net_client.pauseDownload();
+
+}
+
+void AddUrlWindow::on_cancel() {
+    std::cout << "CANCEL BTN" << std::endl;
+    this->hide();
 }
 
 }  // namespace DownloadManager
