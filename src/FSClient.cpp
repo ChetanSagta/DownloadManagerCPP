@@ -1,4 +1,2 @@
-#include"FSClient.hpp"
-namespace DownloadManager{
-
-}
+#include "FSClient.hpp"
+namespace DownloadManager {}

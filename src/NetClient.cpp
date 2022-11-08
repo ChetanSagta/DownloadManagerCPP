@@ -4,6 +4,7 @@
 #include <curl/curl.h>
 #include <curl/easy.h>
 #include <glibmm/base64.h>
+#include <gtkmm/treeview.h>
 #include <math.h>
 #include <stddef.h>
 
@@ -14,11 +15,9 @@
 
 namespace DownloadManager {
 
-NetClient::NetClient() {
-    easy_handle = curl_easy_init();
-}
+NetClient::NetClient (const Glib::RefPtr<Gtk::TreeModel>&treeview) : m_tree_view{treeview}{ easy_handle = curl_easy_init(); }
 
-void NetClient::setUrl(std::string url){
+void NetClient::setUrl(std::string url) {
     std::cout << "URL: " << url << std::endl;
     curl_easy_setopt(easy_handle, CURLOPT_URL, url.c_str());
     /*std::fstream file;*/
@@ -31,16 +30,15 @@ void NetClient::setUrl(std::string url){
     curl_easy_setopt(easy_handle, CURLOPT_FOLLOWLOCATION, 1L);
     curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, a_file);
     curl_easy_setopt(easy_handle, CURLOPT_NOPROGRESS, 0);
-    curl_easy_setopt(easy_handle, CURLOPT_XFERINFOFUNCTION, ProgressCallBack);
+    curl_easy_setopt(easy_handle, CURLOPT_XFERINFODATA, this);
+    curl_easy_setopt(easy_handle, CURLOPT_XFERINFOFUNCTION, progressCallBack);
     curl_easy_setopt(easy_handle, CURLOPT_HEADERDATA, this);
     curl_easy_setopt(easy_handle, CURLOPT_HEADERFUNCTION, headerCallBack);
     this->fileName = getFileName(url, this->contentType);
     std::fstream file(this->fileName, std::ios::out);
 }
 
-void NetClient::run(){
-    curl_easy_perform(easy_handle);
-}
+void NetClient::run() { curl_easy_perform(easy_handle); }
 
 NetClient::~NetClient() { curl_easy_cleanup(easy_handle); }
 
@@ -79,17 +77,18 @@ std::string NetClient::getFileName(std::string url, std::string contentType) {
     return nullptr;
 }
 
-double NetClient::ProgressCallBack(double dltotal, double dlnow, double ultotal, double ulnow) {
+int  NetClient::progressCallBack(void* clientp, double dltotal, double dlnow, double ultotal,
+                                   double ulnow) {
     /*std::cout<<"dltotal: "<<dltotal<<"dlnow: "<<dlnow<<"ultotal:
      * "<<ultotal<<"ulnow: "<<ulnow<<std::endl;*/
     double progress = (dlnow / dltotal) * 100;
     float percent = floorf(progress * 100) / 100;
-    std::cout << "\r" << percent;
+//    static_cast<NetClient*>(clientp)->m_columns->set_data("PERCENTAGE", percent);
     return 0;
 };
 
 void NetClient::pauseDownload() {
-  curl_easy_pause(easy_handle, CURL_READFUNC_PAUSE);
+    curl_easy_pause(easy_handle, CURL_READFUNC_PAUSE);
 }
 
 auto NetClient::headerCallBack(char* buffer, size_t size, size_t items,
@@ -97,7 +96,7 @@ auto NetClient::headerCallBack(char* buffer, size_t size, size_t items,
     std::cout << "Buffer: " << buffer << " Size: " << size
               << " Items : " << items << " UserData: " << userdata << std::endl;
     std::string s(buffer, size * items);  // buffer is not null
-                                  /* terminated*/
+                                          /* terminated*/
     /*std::cout << "==============================" << std::endl;*/
     /*std::cout << s << std::endl;*/
     if (s.find("Content-Type:") != std::string::npos) {

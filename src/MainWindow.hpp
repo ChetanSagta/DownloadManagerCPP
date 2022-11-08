@@ -2,9 +2,10 @@
 
 #include <gtkmm.h>
 
-#include "AddUrlWindow.hpp"
 #include "DownloadEntry.hpp"
 namespace DownloadManager {
+
+class AddUrlWindow;
 class MainWindow : public Gtk::Window {
    public:
     MainWindow();
@@ -19,7 +20,8 @@ class MainWindow : public Gtk::Window {
     void on_del_entry();
     void on_start_entry();
     void on_stop_entry();
-
+    void select_entry(const Gtk::ListStore::Path&, Gtk::TreeViewColumn*);
+    void on_my_row_deleted(const Gtk::TreeModel::Path&);
     // Tree model columns:
     class ModelColumns : public Gtk::TreeModel::ColumnRecord {
        public:
@@ -42,7 +44,7 @@ class MainWindow : public Gtk::Window {
         Gtk::TreeModelColumn<int> m_col_percentage;
     };
 
-    ModelColumns m_Columns;
+    ModelColumns m_columns;
 
     // Child widgets:
     Gtk::ButtonBox m_top_hbox;
@@ -53,6 +55,8 @@ class MainWindow : public Gtk::Window {
     Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
     Gtk::ButtonBox m_ButtonBox;
     Gtk::Button m_add_btn, m_del_btn, m_start_btn, m_stop_btn, m_btn_quit;
-    AddUrlWindow add_url_window;
+    AddUrlWindow* add_url_window;
+    Gtk::TreeRow selected_row;
+    
 };
 }  // namespace DownloadManager

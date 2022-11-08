@@ -13,7 +13,7 @@ namespace DownloadManager {
 class DownloadEntry {
    public:
     DownloadEntry(Glib::ustring, Glib::ustring, Glib::ustring, Glib::ustring,
-                  Glib::ustring, Glib::ustring);
+                  Glib::ustring, int);
     ~DownloadEntry();
 
     int get_sno();
@@ -22,7 +22,7 @@ class DownloadEntry {
     Glib::ustring get_file_size();
     Glib::ustring get_local_size();
     Glib::ustring get_file_location();
-    Glib::ustring get_percentage();
+    int get_percentage();
 
    protected:
     void on_click();
@@ -34,7 +34,7 @@ class DownloadEntry {
     Glib::ustring m_file_size;
     Glib::ustring m_local_size;
     Glib::ustring m_file_location;
-    Glib::ustring m_percentage;
+    int m_percentage;
     static inline int counter = 0;
 };
 
