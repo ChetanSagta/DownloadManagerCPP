@@ -15,10 +15,8 @@
 
 namespace DownloadManager {
 
-NetClient::NetClient (const Glib::RefPtr<Gtk::TreeModel>&treeview) : m_tree_view{treeview}{ easy_handle = curl_easy_init(); }
-
-void NetClient::setUrl(std::string url) {
-    std::cout << "URL: " << url << std::endl;
+NetClient::NetClient(const std::string url) {
+    easy_handle = curl_easy_init();
     curl_easy_setopt(easy_handle, CURLOPT_URL, url.c_str());
     /*std::fstream file;*/
     /*file.open("file.dat", std::ios::out | std::ios::in);*/
@@ -29,9 +27,9 @@ void NetClient::setUrl(std::string url) {
     }
     curl_easy_setopt(easy_handle, CURLOPT_FOLLOWLOCATION, 1L);
     curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, a_file);
-    curl_easy_setopt(easy_handle, CURLOPT_NOPROGRESS, 0);
     curl_easy_setopt(easy_handle, CURLOPT_XFERINFODATA, this);
     curl_easy_setopt(easy_handle, CURLOPT_XFERINFOFUNCTION, progressCallBack);
+    curl_easy_setopt(easy_handle, CURLOPT_NOPROGRESS, 0);
     curl_easy_setopt(easy_handle, CURLOPT_HEADERDATA, this);
     curl_easy_setopt(easy_handle, CURLOPT_HEADERFUNCTION, headerCallBack);
     this->fileName = getFileName(url, this->contentType);
@@ -77,13 +75,14 @@ std::string NetClient::getFileName(std::string url, std::string contentType) {
     return nullptr;
 }
 
-int  NetClient::progressCallBack(void* clientp, double dltotal, double dlnow, double ultotal,
-                                   double ulnow) {
+int NetClient::progressCallBack(void* clientp, double dltotal, double dlnow,
+                                double ultotal, double ulnow) {
     /*std::cout<<"dltotal: "<<dltotal<<"dlnow: "<<dlnow<<"ultotal:
      * "<<ultotal<<"ulnow: "<<ulnow<<std::endl;*/
     double progress = (dlnow / dltotal) * 100;
     float percent = floorf(progress * 100) / 100;
-//    static_cast<NetClient*>(clientp)->m_columns->set_data("PERCENTAGE", percent);
+    //    static_cast<NetClient*>(clientp)->m_columns->set_data("PERCENTAGE",
+    //    percent);
     return 0;
 };
 

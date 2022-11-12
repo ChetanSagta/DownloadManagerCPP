@@ -1,3 +1,5 @@
+#pragma once
+
 #include <glibmm/ustring.h>
 #include <gtkmm/box.h>
 #include <gtkmm/entry.h>
@@ -7,20 +9,20 @@
 #include <string>
 
 #include "gtkmm/container.h"
+#
 
 namespace DownloadManager {
 
 class DownloadEntry {
    public:
-    DownloadEntry(Glib::ustring, Glib::ustring, Glib::ustring, Glib::ustring,
-                  Glib::ustring, int);
+    DownloadEntry(Glib::ustring);
     ~DownloadEntry();
 
     int get_sno();
     Glib::ustring get_title();
     Glib::ustring get_url();
-    Glib::ustring get_file_size();
-    Glib::ustring get_local_size();
+    long get_file_size();
+    long get_local_size();
     Glib::ustring get_file_location();
     int get_percentage();
 
@@ -31,8 +33,8 @@ class DownloadEntry {
     int m_sno;
     Glib::ustring m_title;
     Glib::ustring m_url;
-    Glib::ustring m_file_size;
-    Glib::ustring m_local_size;
+    long m_file_size;
+    long m_local_size;
     Glib::ustring m_file_location;
     int m_percentage;
     static inline int counter = 0;

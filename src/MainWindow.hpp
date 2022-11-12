@@ -2,10 +2,10 @@
 
 #include <gtkmm.h>
 
-#include "DownloadEntry.hpp"
 namespace DownloadManager {
 
 class AddUrlWindow;
+class DownloadEntry;
 class MainWindow : public Gtk::Window {
    public:
     MainWindow();
@@ -56,7 +56,7 @@ class MainWindow : public Gtk::Window {
     Gtk::ButtonBox m_ButtonBox;
     Gtk::Button m_add_btn, m_del_btn, m_start_btn, m_stop_btn, m_btn_quit;
     AddUrlWindow* add_url_window;
-    Gtk::TreeRow selected_row;
+    Gtk::TreeModel::Row selected_row;
     
 };
 }  // namespace DownloadManager

@@ -4,6 +4,8 @@
 #include <iostream>
 
 #include "AddUrlWindow.hpp"
+#include "DownloadEntry.hpp"
+#include "StringUtil.cpp"
 #include "gtkmm/box.h"
 #include "gtkmm/enums.h"
 
@@ -17,9 +19,12 @@ MainWindow::MainWindow()
       m_stop_btn("STOP"),
       m_btn_quit("Quit"),
       add_url_window() {
+
+
     set_title("Gtk::TreeView (ListStore) example");
+    set_position(Gtk::WIN_POS_CENTER);
     set_border_width(5);
-    set_default_size(600, 600);
+    set_default_size(900, 700);
 
     add(m_vbox);
     // Add the TreeView, inside a ScrolledWindow, with the button underneath:
@@ -108,9 +113,14 @@ void MainWindow::on_del_entry() {
     }
 }
 void MainWindow::on_start_entry() {
-    std::cout << "ON START Entry" << std::endl;
+    if (selected_row == nullptr) return;
+    /*std::cout << selected_row.children()<< std::endl;*/
+   selected_row.
 }
-void MainWindow::on_stop_entry() { std::cout << "ON STOP Entry" << std::endl; }
+void MainWindow::on_stop_entry() {
+    if (selected_row == nullptr) return;
+    std::cout << "ON STOP Entry" << std::endl;
+}
 void MainWindow::add_entry() {
     static int count = 0;
     Gtk::TreeModel::Row row = *(m_refTreeModel->append());
@@ -128,8 +138,10 @@ void MainWindow::add_entry(DownloadEntry& entry) {
     row[m_columns.m_col_id] = entry.get_sno();
     row[m_columns.m_col_title] = entry.get_title();
     row[m_columns.m_col_url] = entry.get_url();
-    row[m_columns.m_col_file_size] = entry.get_file_size();
-    row[m_columns.m_col_local_file_size] = entry.get_local_size();
+    row[m_columns.m_col_file_size] =
+        StringUtil::getFileSizeStr(entry.get_file_size());
+    row[m_columns.m_col_local_file_size] =
+        StringUtil::getFileSizeStr(entry.get_local_size());
     row[m_columns.m_col_file_location] = entry.get_file_location();
     row[m_columns.m_col_percentage] = entry.get_percentage();
 }

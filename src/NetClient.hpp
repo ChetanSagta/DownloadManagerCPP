@@ -1,3 +1,4 @@
+#pragma once
 #include <curl/curl.h>
 #include <gtkmm/treeview.h>
 
@@ -7,10 +8,8 @@ namespace DownloadManager {
 
 class NetClient {
    public:
-    NetClient(const Glib::RefPtr<Gtk::TreeModel>& );
+    NetClient(const std::string);
     ~NetClient();
-
-    void setUrl(std::string url);
     void pauseDownload();
     void run();
 
@@ -20,7 +19,6 @@ class NetClient {
     std::string contentType;
     int port;
     CURL* easy_handle;
-    Gtk::TreeView m_tree_view;
     std::string getFileName();
     static size_t writeToFile(char* ptr, size_t size, size_t nmemb, void* f);
     static size_t header_callback(char* buffer, unsigned long size,

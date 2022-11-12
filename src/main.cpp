@@ -4,7 +4,6 @@
 #include <string>
 
 #include "MainWindow.hpp"
-#include "NetClient.hpp"
 #include "gtkmm/application.h"
 
 int main(int argc, char* argv[]) {

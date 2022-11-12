@@ -6,5 +6,7 @@ build/*
 .cproject
 .project
 .qtc_clangd/*
+.kdev4/*
+DownloadManager.kdev4
 compile_commands.json
 CMakeLists.txt.user

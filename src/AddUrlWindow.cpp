@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+#include "DownloadEntry.hpp"
 #include "MainWindow.hpp"
 #include "NetClient.hpp"
 #include "StringUtil.cpp"
@@ -22,6 +23,8 @@ AddUrlWindow::AddUrlWindow(MainWindow* window)
       m_text_box(Gtk::Orientation::ORIENTATION_HORIZONTAL),
       m_window(window) {
     add(m_box);
+
+    set_position(Gtk::WIN_POS_CENTER);
 
     m_ok.signal_clicked().connect(sigc::mem_fun(*this, &AddUrlWindow::on_ok));
     m_cancel.signal_clicked().connect(
@@ -48,10 +51,7 @@ void AddUrlWindow::on_ok() {
     }
     url = StringUtil::trim(url);
 
-    //    NetClient net_client;
-    //    net_client.setUrl(url);
-    //    net_client.run();
-    //    net_client.pauseDownload();
+    /*NetClient net_client{url};*/
 
     m_window->add_entry();
 }
