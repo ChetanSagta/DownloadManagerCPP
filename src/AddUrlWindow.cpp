@@ -51,9 +51,13 @@ void AddUrlWindow::on_ok() {
     }
     url = StringUtil::trim(url);
 
-    /*NetClient net_client{url};*/
+    Gtk::TreeRow row = m_window->add_entry();
 
-    m_window->add_entry();
+    /*NetClient net_client{url};*/
+    NetClient net_client = m_window->get_net_client();
+    net_client.add_download(url, row);
+
+
 }
 
 void AddUrlWindow::on_cancel() {

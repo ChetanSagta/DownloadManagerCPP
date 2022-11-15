@@ -22,7 +22,7 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 include_directories(${GTKMM_INCLUDE_DIRS})
 include_directories(${CURL_INCLUDE_DIR})
 
-add_executable(${PROJECT_NAME} src/DownloadEntry.cpp src/DownloadEntry.hpp src/main.cpp src/MainWindow.cpp src/MainWindow.hpp  src/FSClient.hpp src/FSClient.cpp src/NetClient.hpp src/NetClient.cpp src/AddUrlWindow.hpp src/AddUrlWindow.cpp src/StringUtil.cpp)
+add_executable(${PROJECT_NAME} src/DownloadEntry.cpp src/DownloadEntry.hpp src/main.cpp src/MainWindow.cpp src/MainWindow.hpp  src/FSClient.hpp src/FSClient.cpp src/NetClient.hpp src/NetClient.cpp src/AddUrlWindow.hpp src/AddUrlWindow.cpp src/StringUtil.cpp src/ModelColumns.hpp)
 
 # Link with the IMPORTED target created by 'pkg_check_modules'
 # That target contains both include directories and actual libraries for link.

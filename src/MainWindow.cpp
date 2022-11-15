@@ -15,7 +15,7 @@ MainWindow::MainWindow()
       m_vbox(Gtk::ORIENTATION_VERTICAL),
       m_add_btn("ADD"),
       m_del_btn("DELETE"),
-      m_start_btn("START"),
+      //m_start_btn("START"),
       m_stop_btn("STOP"),
       m_btn_quit("Quit"),
       add_url_window() {
@@ -115,25 +115,26 @@ void MainWindow::on_del_entry() {
 void MainWindow::on_start_entry() {
     if (selected_row == nullptr) return;
     /*std::cout << selected_row.children()<< std::endl;*/
-   selected_row.
+   std::cout<<selected_row[m_columns.m_col_id]<<std::endl;
 }
 void MainWindow::on_stop_entry() {
     if (selected_row == nullptr) return;
     std::cout << "ON STOP Entry" << std::endl;
 }
-void MainWindow::add_entry() {
+Gtk::TreeRow MainWindow::add_entry() {
     static int count = 0;
     Gtk::TreeModel::Row row = *(m_refTreeModel->append());
     row[m_columns.m_col_id] = ++count;
-    ;
     row[m_columns.m_col_title] = "Billy Bob";
     row[m_columns.m_col_url] = "URL";
     row[m_columns.m_col_file_size] = "10MB";
     row[m_columns.m_col_local_file_size] = "1MB";
     row[m_columns.m_col_file_location] = "Downloads";
     row[m_columns.m_col_percentage] = 10;
+
+    return row;
 }
-void MainWindow::add_entry(DownloadEntry& entry) {
+Gtk::TreeRow MainWindow::add_entry(DownloadEntry& entry) {
     Gtk::TreeModel::Row row = *(m_refTreeModel->append());
     row[m_columns.m_col_id] = entry.get_sno();
     row[m_columns.m_col_title] = entry.get_title();
@@ -144,6 +145,7 @@ void MainWindow::add_entry(DownloadEntry& entry) {
         StringUtil::getFileSizeStr(entry.get_local_size());
     row[m_columns.m_col_file_location] = entry.get_file_location();
     row[m_columns.m_col_percentage] = entry.get_percentage();
+    return row;
 }
 
 void MainWindow::select_entry(const Gtk::TreeModel::Path& path,
@@ -158,4 +160,8 @@ void MainWindow::select_entry(const Gtk::TreeModel::Path& path,
                   << ", Name= " << row[m_columns.m_col_title] << std::endl;
     }
 }
-}  // namespace DownloadManager
+
+NetClient& MainWindow::get_net_client(){
+    return net_client;
+}
+}// namespace DownloadManager
